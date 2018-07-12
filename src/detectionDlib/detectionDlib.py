@@ -3,7 +3,7 @@
 import cv2
 import dlib
 
-path = "../statics/img/4.jpg"
+path = "../statics/img/5.png"
 img = cv2.imread(path)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -11,7 +11,7 @@ gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 detector = dlib.get_frontal_face_detector()
 # 获取人脸检测器
 predictor = dlib.shape_predictor(
-    "C:\\Users\\Administrator\\Downloads\\shape_predictor_68_face_landmarks.dat"
+    "../resources/shape_predictor_68_face_landmarks.dat"
 )
 
 dets = detector(gray, 1)
