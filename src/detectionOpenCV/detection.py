@@ -2,6 +2,7 @@ import cv2
 
 filepath = "../statics/img/3.jpg"
 img = cv2.imread(filepath)  # 读取图片
+
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 转换灰色
 
 # OpenCV人脸识别分类器

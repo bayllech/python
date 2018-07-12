@@ -1,21 +1,27 @@
 #coding=utf-8
-#性别识别
-
+#性别识别 debug 启动
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import cv2
 from keras.models import load_model
 import numpy as np
+from src.detectionOpenCV.Chinese import ChineseText
 
-img = cv2.imread("../statics/img/1.jpg")
+filepath = "../statics/img/5.png"
+img = cv2.imread(filepath)  # 读取图片
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 转换灰色
+print(img.shape)
+# OpenCV人脸识别分类器
 face_classifier = cv2.CascadeClassifier(
     "../resources/haarcascade_frontalface_default.xml"
 )
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 faces = face_classifier.detectMultiScale(
     gray, scaleFactor=1.2, minNeighbors=3, minSize=(140, 140))
 
 gender_classifier = load_model(
-    "classifier/gender_models/simple_CNN.81-0.96.hdf5")
-gender_labels = {0: 'w', 1: 'm'}
+    "../resources/simple_CNN.81-0.96.hdf5")
+gender_labels = {0: '女', 1: '男'}
 color = (255, 255, 255)
 
 for (x, y, w, h) in faces:
@@ -26,7 +32,7 @@ for (x, y, w, h) in faces:
     gender_label_arg = np.argmax(gender_classifier.predict(face))
     gender = gender_labels[gender_label_arg]
     cv2.rectangle(img, (x, y), (x + h, y + w), color, 2)
-    img = cv2.putText(img, gender, x + h, y, color, 30)
+    img = ChineseText.cv2ImgAddText(img, gender, x + h, y, color, 30)
 
 cv2.imshow("Image", img)
 cv2.waitKey(0)
